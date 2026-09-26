@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "MIR International Tour & Travels",
+    "slug": "mir-international-travel-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#071A2B"
+    },
+    "android": {
+      "package": "com.mirinternational.travel",
+      "versionCode": 1
+    },
+    "ios": {
+      "bundleIdentifier": "com.mirinternational.travel"
+    }
+  }
+}
