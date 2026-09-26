@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -6,32 +6,108 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
 
 const services = [
-  { icon: "✈️", title: "Flights" },
-  { icon: "🕋", title: "Umrah" },
-  { icon: "🏨", title: "Hotels" },
-  { icon: "🚐", title: "Airport Transfer" },
-  { icon: "🎫", title: "My Bookings" },
-  { icon: "🔥", title: "Offers" },
+  { icon: "✈️", title: "Flights", subtitle: "Book your journey" },
+  { icon: "🕋", title: "Umrah", subtitle: "Complete packages" },
+  { icon: "🏨", title: "Hotels", subtitle: "Stay with comfort" },
+  { icon: "🚐", title: "Airport Transfer", subtitle: "Easy & reliable" },
+  { icon: "📋", title: "My Bookings", subtitle: "Manage bookings" },
+  { icon: "🎁", title: "Offers", subtitle: "Special deals" },
+];
+
+const routes = [
+  { from: "Delhi", to: "Bishkek", code: "DEL → BSZ" },
+  { from: "Kolkata", to: "Dubai", code: "CCU → DXB" },
 ];
 
 export default function App() {
+  const [screen, setScreen] = useState("home");
+
+  if (screen === "flights") {
+    return (
+      <SafeAreaView style={styles.safe}>
+        <StatusBar barStyle="light-content" backgroundColor="#061525" />
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.container}
+        >
+          {/* Flight Header */}
+          <View style={styles.flightHeader}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => setScreen("home")}
+            >
+              <Text style={styles.backText}>←</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.flightHeaderTitle}>Flight Booking</Text>
+
+            <View style={{ width: 44 }} />
+          </View>
+
+          {/* Title */}
+          <View style={styles.flightIntro}>
+            <Text style={styles.flightIcon}>✈️</Text>
+            <Text style={styles.flightTitle}>Find Your Flight</Text>
+            <Text style={styles.flightDescription}>
+              Search and book your next journey with MIR International.
+            </Text>
+          </View>
+
+          {/* From */}
+          <View style={styles.inputCard}>
+            <Text style={styles.inputLabel}>FROM</Text>
+            <Text style={styles.inputValue}>Delhi (DEL)</Text>
+          </View>
+
+          {/* To */}
+          <View style={styles.inputCard}>
+            <Text style={styles.inputLabel}>TO</Text>
+            <Text style={styles.inputValue}>Bishkek (BSZ)</Text>
+          </View>
+
+          {/* Date */}
+          <View style={styles.inputCard}>
+            <Text style={styles.inputLabel}>TRAVEL DATE</Text>
+            <Text style={styles.inputValue}>Select Date</Text>
+          </View>
+
+          {/* Passengers */}
+          <View style={styles.inputCard}>
+            <Text style={styles.inputLabel}>PASSENGERS</Text>
+            <Text style={styles.inputValue}>1 Adult</Text>
+          </View>
+
+          {/* Search */}
+          <TouchableOpacity style={styles.searchButton}>
+            <Text style={styles.searchButtonText}>Search Flights</Text>
+          </TouchableOpacity>
+
+          <Text style={styles.flightNote}>
+            More flight options and booking features will be added next.
+          </Text>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar style="light" />
+      <StatusBar barStyle="light-content" backgroundColor="#061525" />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}
       >
+        {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.logoText}>MIR</Text>
-            <Text style={styles.brand}>INTERNATIONAL</Text>
-            <Text style={styles.subBrand}>TOUR & TRAVELS</Text>
+            <Text style={styles.brand}>MIR INTERNATIONAL</Text>
+            <Text style={styles.brandSub}>TOUR & TRAVELS</Text>
           </View>
 
           <TouchableOpacity style={styles.profile}>
@@ -39,62 +115,104 @@ export default function App() {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.hero}>
-          <Text style={styles.smallGold}>WELCOME TO</Text>
-          <Text style={styles.heroTitle}>MIR International</Text>
-          <Text style={styles.heroText}>
-            Your journey, our responsibility.
+        {/* Welcome */}
+        <View style={styles.welcome}>
+          <Text style={styles.smallText}>WELCOME TO</Text>
+
+          <Text style={styles.welcomeTitle}>
+            Your Journey Starts Here
           </Text>
-          <Text style={styles.heroServices}>
-            Flights • Hotels • Visa • Umrah • Transfers
+
+          <Text style={styles.welcomeDescription}>
+            Flights, hotels, Umrah and travel services — all in one place.
           </Text>
+
+          <TouchableOpacity style={styles.primaryButton}>
+            <Text style={styles.primaryButtonText}>
+              Explore Services →
+            </Text>
+          </TouchableOpacity>
         </View>
 
-        <Text style={styles.sectionTitle}>Book Your Journey</Text>
+        {/* Services */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Our Services</Text>
+          <Text style={styles.viewAll}>View all</Text>
+        </View>
 
         <View style={styles.grid}>
-          {services.map((item) => (
+          {services.map((service) => (
             <TouchableOpacity
-              key={item.title}
-              style={styles.card}
-              activeOpacity={0.8}
+              key={service.title}
+              style={styles.serviceCard}
+              onPress={() => {
+                if (service.title === "Flights") {
+                  setScreen("flights");
+                }
+              }}
             >
-              <Text style={styles.icon}>{item.icon}</Text>
-              <Text style={styles.cardTitle}>{item.title}</Text>
+              <View style={styles.iconBox}>
+                <Text style={styles.icon}>{service.icon}</Text>
+              </View>
+
+              <Text style={styles.serviceTitle}>
+                {service.title}
+              </Text>
+
+              <Text style={styles.serviceSubtitle}>
+                {service.subtitle}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
 
-        <Text style={styles.sectionTitle}>Popular Routes</Text>
+        {/* Popular Routes */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Popular Routes</Text>
+        </View>
 
-        <TouchableOpacity style={styles.route}>
-          <View>
-            <Text style={styles.routeTitle}>Delhi → Bishkek</Text>
-            <Text style={styles.routeText}>International Flight</Text>
+        {routes.map((route) => (
+          <TouchableOpacity
+            key={route.code}
+            style={styles.routeCard}
+            onPress={() => setScreen("flights")}
+          >
+            <View>
+              <Text style={styles.routeCode}>{route.code}</Text>
+
+              <Text style={styles.routeText}>
+                {route.from} → {route.to}
+              </Text>
+            </View>
+
+            <Text style={styles.arrow}>→</Text>
+          </TouchableOpacity>
+        ))}
+
+        {/* Support */}
+        <View style={styles.support}>
+          <Text style={styles.supportIcon}>💬</Text>
+
+          <View style={styles.supportContent}>
+            <Text style={styles.supportTitle}>Need Help?</Text>
+
+            <Text style={styles.supportText}>
+              Our travel team is ready to assist you.
+            </Text>
           </View>
-          <Text style={styles.arrow}>›</Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity style={styles.route}>
-          <View>
-            <Text style={styles.routeTitle}>Kolkata → Dubai</Text>
-            <Text style={styles.routeText}>International Flight</Text>
-          </View>
-          <Text style={styles.arrow}>›</Text>
-        </TouchableOpacity>
-
-        <View style={styles.help}>
-          <Text style={styles.helpTitle}>Need Help?</Text>
-          <Text style={styles.helpText}>
-            Our travel team is ready to assist you.
-          </Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Contact Support</Text>
+          <TouchableOpacity style={styles.supportButton}>
+            <Text style={styles.supportButtonText}>Contact</Text>
           </TouchableOpacity>
         </View>
 
+        {/* Footer */}
         <Text style={styles.footer}>
-          © MIR International Tour & Travels
+          MIR INTERNATIONAL TOUR & TRAVELS
+        </Text>
+
+        <Text style={styles.footerSub}>
+          Travel • Explore • Experience
         </Text>
       </ScrollView>
     </SafeAreaView>
@@ -104,46 +222,42 @@ export default function App() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: "#071A2B",
+    backgroundColor: "#061525",
   },
 
   container: {
-    padding: 18,
-    paddingBottom: 40,
+    paddingHorizontal: 18,
+    paddingTop: 18,
+    paddingBottom: 35,
   },
 
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 24,
-  },
-
-  logoText: {
-    color: "#C69A32",
-    fontSize: 28,
-    fontWeight: "900",
   },
 
   brand: {
     color: "#FFFFFF",
-    fontSize: 14,
-    fontWeight: "900",
-    letterSpacing: 1,
-  },
-
-  subBrand: {
-    color: "#C69A32",
-    fontSize: 10,
+    fontSize: 20,
     fontWeight: "800",
     letterSpacing: 1,
   },
 
+  brandSub: {
+    color: "#8FA7BC",
+    fontSize: 11,
+    fontWeight: "600",
+    letterSpacing: 2,
+    marginTop: 3,
+  },
+
   profile: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    backgroundColor: "#102B43",
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#102A42",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -152,138 +266,298 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 
-  hero: {
-    backgroundColor: "#102B43",
-    borderRadius: 20,
+  welcome: {
+    backgroundColor: "#0D2942",
+    borderRadius: 22,
     padding: 22,
     marginBottom: 28,
+    borderWidth: 1,
+    borderColor: "#173C5A",
   },
 
-  smallGold: {
-    color: "#C69A32",
+  smallText: {
+    color: "#8FA7BC",
     fontSize: 11,
-    fontWeight: "800",
-    letterSpacing: 1,
+    fontWeight: "700",
+    letterSpacing: 2,
   },
 
-  heroTitle: {
+  welcomeTitle: {
     color: "#FFFFFF",
-    fontSize: 25,
-    fontWeight: "900",
-    marginTop: 5,
-  },
-
-  heroText: {
-    color: "#D7E2ED",
-    fontSize: 14,
+    fontSize: 28,
+    fontWeight: "800",
     marginTop: 8,
+    lineHeight: 34,
   },
 
-  heroServices: {
-    color: "#9FB3C8",
-    fontSize: 12,
-    marginTop: 14,
+  welcomeDescription: {
+    color: "#AFC0CF",
+    fontSize: 14,
+    lineHeight: 21,
+    marginTop: 10,
+  },
+
+  primaryButton: {
+    backgroundColor: "#FFFFFF",
+    paddingVertical: 13,
+    paddingHorizontal: 18,
+    borderRadius: 12,
+    alignSelf: "flex-start",
+    marginTop: 20,
+  },
+
+  primaryButtonText: {
+    color: "#061525",
+    fontSize: 14,
+    fontWeight: "800",
+  },
+
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 14,
   },
 
   sectionTitle: {
     color: "#FFFFFF",
     fontSize: 19,
-    fontWeight: "900",
-    marginBottom: 13,
+    fontWeight: "800",
+  },
+
+  viewAll: {
+    color: "#8FA7BC",
+    fontSize: 13,
   },
 
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    marginBottom: 25,
+    marginBottom: 28,
   },
 
-  card: {
-    width: "31.5%",
-    backgroundColor: "#102B43",
-    borderRadius: 16,
-    paddingVertical: 18,
+  serviceCard: {
+    width: "48%",
+    backgroundColor: "#0B2136",
+    borderRadius: 17,
+    padding: 15,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#153650",
+  },
+
+  iconBox: {
+    width: 43,
+    height: 43,
+    borderRadius: 13,
+    backgroundColor: "#132F48",
     alignItems: "center",
+    justifyContent: "center",
     marginBottom: 12,
   },
 
   icon: {
-    fontSize: 27,
+    fontSize: 21,
   },
 
-  cardTitle: {
+  serviceTitle: {
     color: "#FFFFFF",
-    fontSize: 11,
+    fontSize: 15,
     fontWeight: "700",
-    textAlign: "center",
-    marginTop: 8,
   },
 
-  route: {
-    backgroundColor: "#102B43",
+  serviceSubtitle: {
+    color: "#7890A5",
+    fontSize: 11,
+    marginTop: 5,
+  },
+
+  routeCard: {
+    backgroundColor: "#0B2136",
     borderRadius: 16,
     padding: 17,
-    marginBottom: 11,
+    marginBottom: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#153650",
   },
 
-  routeTitle: {
-    color: "#FFFFFF",
-    fontSize: 17,
-    fontWeight: "800",
+  routeCode: {
+    color: "#7890A5",
+    fontSize: 10,
+    fontWeight: "700",
+    letterSpacing: 1,
   },
 
   routeText: {
-    color: "#9FB3C8",
-    fontSize: 12,
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700",
     marginTop: 5,
   },
 
   arrow: {
-    color: "#C69A32",
-    fontSize: 30,
+    color: "#FFFFFF",
+    fontSize: 23,
   },
 
-  help: {
-    backgroundColor: "#102B43",
-    borderRadius: 16,
-    padding: 19,
-    marginTop: 15,
+  support: {
+    backgroundColor: "#102A42",
+    borderRadius: 18,
+    padding: 16,
+    marginTop: 18,
+    flexDirection: "row",
+    alignItems: "center",
   },
 
-  helpTitle: {
+  supportIcon: {
+    fontSize: 25,
+    marginRight: 12,
+  },
+
+  supportContent: {
+    flex: 1,
+  },
+
+  supportTitle: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "800",
+  },
+
+  supportText: {
+    color: "#8FA7BC",
+    fontSize: 11,
+    marginTop: 3,
+  },
+
+  supportButton: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    paddingVertical: 9,
+    paddingHorizontal: 12,
+  },
+
+  supportButtonText: {
+    color: "#061525",
+    fontSize: 12,
+    fontWeight: "800",
+  },
+
+  /* Flight Screen */
+
+  flightHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 28,
+  },
+
+  backButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    backgroundColor: "#102A42",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  backText: {
+    color: "#FFFFFF",
+    fontSize: 25,
+  },
+
+  flightHeaderTitle: {
     color: "#FFFFFF",
     fontSize: 19,
     fontWeight: "800",
   },
 
-  helpText: {
-    color: "#9FB3C8",
-    fontSize: 13,
-    marginTop: 6,
-  },
-
-  button: {
-    borderWidth: 1,
-    borderColor: "#C69A32",
-    borderRadius: 11,
-    paddingVertical: 12,
+  flightIntro: {
     alignItems: "center",
-    marginTop: 16,
+    marginBottom: 28,
   },
 
-  buttonText: {
-    color: "#C69A32",
+  flightIcon: {
+    fontSize: 42,
+    marginBottom: 12,
+  },
+
+  flightTitle: {
+    color: "#FFFFFF",
+    fontSize: 26,
     fontWeight: "800",
   },
 
-  footer: {
+  flightDescription: {
+    color: "#8FA7BC",
+    fontSize: 13,
     textAlign: "center",
-    color: "#71879B",
+    lineHeight: 20,
+    marginTop: 8,
+  },
+
+  inputCard: {
+    backgroundColor: "#0B2136",
+    borderRadius: 16,
+    padding: 17,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#153650",
+  },
+
+  inputLabel: {
+    color: "#7890A5",
+    fontSize: 10,
+    fontWeight: "800",
+    letterSpacing: 1,
+  },
+
+  inputValue: {
+    color: "#FFFFFF",
+    fontSize: 17,
+    fontWeight: "700",
+    marginTop: 7,
+  },
+
+  searchButton: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 14,
+    paddingVertical: 16,
+    alignItems: "center",
+    marginTop: 8,
+  },
+
+  searchButtonText: {
+    color: "#061525",
+    fontSize: 16,
+    fontWeight: "800",
+  },
+
+  flightNote: {
+    color: "#526B80",
+    textAlign: "center",
     fontSize: 11,
-    marginTop: 30,
+    lineHeight: 17,
+    marginTop: 20,
+  },
+
+  footer: {
+    color: "#526B80",
+    textAlign: "center",
+    fontSize: 10,
+    fontWeight: "700",
+    letterSpacing: 1,
+    marginTop: 32,
+  },
+
+  footerSub: {
+    color: "#40586C",
+    textAlign: "center",
+    fontSize: 10,
+    marginTop: 6,
   },
 });
